@@ -1,5 +1,6 @@
 package com.example.hoboirot.datadapt;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hoboirot.Hoboi;
@@ -15,6 +17,12 @@ import com.example.hoboirot.R;
 import java.util.ArrayList;
 
 public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> {
+
+    public interface HoboiRemoveListener {
+        public void onHoboiRemove();
+    }
+
+    HoboiRemoveListener hobremlisten;
 
     private ArrayList<Hoboi> localDataSet;
 
@@ -52,11 +60,11 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
     /**
      * Initialize the dataset of the Adapter
      *
-     * @param dataSet String[] containing the data to populate views to be used
-     * by RecyclerView
+     * @param dataSet ArrayList of Hobois
      */
-    public HoboiAdapter(ArrayList<Hoboi> dataSet) {
+    public HoboiAdapter(ArrayList<Hoboi> dataSet, Context c) {
         localDataSet = dataSet;
+        hobremlisten = (HoboiRemoveListener) c;
     }
 
     // Create new views (invoked by the layout manager)
@@ -88,6 +96,15 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
                     localDataSet.get(viewHolder.getAdapterPosition()).setDoneToday(true);
                 }
 
+            }
+        });
+
+        viewHolder.getBtnRemove().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                localDataSet.remove(viewHolder.getAdapterPosition());
+                notifyItemRemoved(viewHolder.getAdapterPosition());
+                hobremlisten.onHoboiRemove();
             }
         });
     }

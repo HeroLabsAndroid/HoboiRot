@@ -27,7 +27,7 @@ public class AddHoboiDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction.
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View layout = inflater.inflate(R.layout.dlg_addhoboi, null);
@@ -58,7 +58,7 @@ public class AddHoboiDialog extends DialogFragment {
             listener = (AddHoboiDialogListener) context;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface. Throw exception.
-            throw new ClassCastException(requireActivity().toString()
+            throw new ClassCastException(context.toString()
                     + " must implement AddHoboiDialogListener");
         }
 
