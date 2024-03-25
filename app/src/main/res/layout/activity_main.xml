@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/DARK_bg"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/BTN_addHoboi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:text="Button"
+        android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/TXTVW_debug" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCLVW_hoboilist"
@@ -23,7 +24,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/black"
+        android:layout_marginBottom="8dp"
+        android:background="@color/DARK_bg"
         app:layout_constraintBottom_toTopOf="@+id/BTN_addHoboi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +36,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:text="Debug"
+        android:textColor="@color/DARK_txt_hilite"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/BTN_addHoboi"
         app:layout_constraintTop_toBottomOf="@+id/RCLVW_hoboilist" />
+
+    <Button
+        android:id="@+id/BTN_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="#BD49D1"
+        android:text="STATS"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_addHoboi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/BTN_addHoboi" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

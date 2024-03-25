@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="64dp">
+    android:layout_height="wrap_content">
 
     <Button
         android:id="@+id/BTN_removehoboi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:backgroundTint="#E91E63"
-        android:text="Wech damit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/BTN_hoboidone"
+        android:text="Hau wech"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -21,18 +21,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="#7443CC"
         android:text="Done did it"
+        app:layout_constraintEnd_toStartOf="@+id/BTN_removehoboi"
         app:layout_constraintStart_toEndOf="@+id/TXTVIEW_hoboiname"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/TXTVIEW_hoboiname"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:maxLines="1"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbars="horizontal"
+        android:scrollHorizontally="false"
         android:text="TextView"
+        android:textColor="@color/DARK_txt"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/BTN_hoboidone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_hoboidone" />
+
+    <TextView
+        android:id="@+id/TXTVIEW_lastperf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="@color/DARK_txt"
+        app:layout_constraintEnd_toEndOf="@+id/TXTVIEW_hoboiname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TXTVIEW_hoboiname" />
+
+    <Button
+        android:id="@+id/BTN_showlog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#8BC34A"
+        android:text="Logg me"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/BTN_hoboidone"
+        app:layout_constraintTop_toBottomOf="@+id/BTN_hoboidone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

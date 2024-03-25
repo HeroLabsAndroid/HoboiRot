@@ -1,6 +1,5 @@
-package com.example.hoboirot;
+package com.example.hoboirot.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +11,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.hoboirot.R;
 
 public class AddHoboiDialog extends DialogFragment {
 

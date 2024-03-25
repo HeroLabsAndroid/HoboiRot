@@ -1,6 +1,8 @@
 package com.example.hoboirot;
 
-public class Hoboi {
+import java.io.Serializable;
+
+public class Hoboi implements Serializable {
     private int id;
     private String name;
     private boolean doneToday;
