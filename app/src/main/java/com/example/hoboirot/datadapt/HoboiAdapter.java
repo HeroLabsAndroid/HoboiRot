@@ -124,11 +124,11 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
 
         if(!localDataSet.get(position).done_today()) {
             Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_uncheck);
-            viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 116, 67, 204));
+            viewHolder.getBtnDone().setBackgroundColor(ContextCompat.getColor(ctx, R.color.ACC_5));
             viewHolder.getBtnDone().setIcon(dr);
         } else {
             Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_check);
-            viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 128, 128, 128));
+            viewHolder.getBtnDone().setBackgroundColor(ContextCompat.getColor(ctx, R.color.ACC_4));
             viewHolder.getBtnDone().setIcon(dr);
         }
         viewHolder.getBtnDone().setOnClickListener(new View.OnClickListener() {
@@ -136,7 +136,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
             public void onClick(View view) {
                 if(localDataSet.get(viewHolder.getAdapterPosition()).done_today()) {
                     Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_uncheck);
-                    viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 116, 67, 204));
+                    viewHolder.getBtnDone().setBackgroundColor(ContextCompat.getColor(ctx, R.color.ACC_5));
                     viewHolder.getBtnDone().setIcon(dr);
                     localDataSet.get(viewHolder.getAdapterPosition()).undo();
 
@@ -147,7 +147,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
                     } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
                 } else {
                     Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_check);
-                    viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 128, 128, 128));
+                    viewHolder.getBtnDone().setBackgroundColor(ContextCompat.getColor(ctx, R.color.ACC_4));
                     viewHolder.getBtnDone().setIcon(dr);
                     localDataSet.get(viewHolder.getAdapterPosition()).perform(LocalDateTime.now());
 
