@@ -2,7 +2,7 @@ package com.example.hoboirot;
 
 import java.io.Serializable;
 
-public class Hoboi implements Serializable {
+public class Hoboi {
     private int id;
     private String name;
     private boolean doneToday;
@@ -11,6 +11,12 @@ public class Hoboi implements Serializable {
         this.id = id;
         this.name = name;
         this.doneToday = false;
+    }
+
+    public Hoboi(HoboiSave hs) {
+        id = hs.id;
+        name = hs.name;
+        doneToday = false;
     }
 
     public int getId() {
@@ -35,5 +41,9 @@ public class Hoboi implements Serializable {
 
     public void setDoneToday(boolean doneToday) {
         this.doneToday = doneToday;
+    }
+
+    public HoboiSave toSave() {
+        return new HoboiSave(id, name);
     }
 }

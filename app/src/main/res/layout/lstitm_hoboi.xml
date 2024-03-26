@@ -5,43 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/BTN_removehoboi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="#E91E63"
-        android:text="Hau wech"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/DARK_txt_hilite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/BTN_showlog"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <Button
-        android:id="@+id/BTN_hoboidone"
-        android:layout_width="wrap_content"
+    </FrameLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/BTN_removehoboi"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#E91E63"
+        app:icon="@drawable/btn_yeet"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BTN_showlog" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/BTN_hoboidone"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#7443CC"
-        android:text="Done did it"
-        app:layout_constraintEnd_toStartOf="@+id/BTN_removehoboi"
-        app:layout_constraintStart_toEndOf="@+id/TXTVIEW_hoboiname"
+        android:backgroundTint="#808080"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:iconGravity="start"
+        app:iconPadding="0dp"
+        app:iconSize="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/TXTVIEW_hoboiname"
-        android:layout_width="96dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:maxLines="1"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbars="horizontal"
         android:scrollHorizontally="false"
         android:text="TextView"
         android:textColor="@color/DARK_txt"
-        android:textSize="20sp"
+        android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="@+id/BTN_hoboidone"
+        app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_hoboidone" />
 
@@ -49,24 +68,47 @@
         android:id="@+id/TXTVIEW_lastperf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textColor="@color/DARK_txt"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="@+id/TXTVIEW_hoboiname"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TXTVIEW_hoboiname" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/BTN_showlog"
-        android:layout_width="wrap_content"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#8BC34A"
-        android:text="Logg me"
+        app:icon="@drawable/btn_history"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/DARK_txt_hilite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/BTN_hoboidone"
-        app:layout_constraintTop_toBottomOf="@+id/BTN_hoboidone" />
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout3"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/DARK_txt_hilite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/BTN_hoboidone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

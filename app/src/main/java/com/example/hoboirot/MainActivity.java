@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.hoboirot.datadapt.HoboiAdapter;
 import com.example.hoboirot.dialog.AddHoboiDialog;
 import com.example.hoboirot.dialog.HoboiStatDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements AddHoboiDialog.AddHoboiDialogListener, HoboiAdapter.HoboiRemoveListener {
 
     ArrayList<Hoboi> hobbs = new ArrayList<>();
+
+    ArrayList<HobCat> hobcats = new ArrayList<>();
     ArrayList<HoboiLog> logs = new ArrayList<>();
     RecyclerView hobblist;
     Button btnAdd, btnStat;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
 
     public void save_dat() {
         DatProc.saveData(this, logs);
+
     }
 
     public void show_stats() {
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         for(HoboiLog hl: logs) {
             hobbs.add(hl.getHob());
         }
+
+        logs = Util.sort_hobois_by_name(logs);
 
         /*hobbs.add(new Hoboi(0, "Dummy1"));
         hobbs.add(new Hoboi(1, "Dummy2"));
@@ -106,18 +112,39 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
 
     @Override
     public void onAddHoboiBtnClick(DialogFragment dialog, String name) {
-        hobbs.add(new Hoboi(hobbs.size(), name));
-        logs.add(new HoboiLog(hobbs.get(hobbs.size()-1)));
-        hobblist.getAdapter().notifyItemInserted(logs.size()-1);
-        hobblist.getAdapter().notifyItemRangeChanged(logs.size()-1, 1);
-        tvDebug.setText(""+hobblist.getAdapter().getItemCount()+" Items");
+        boolean exists = false;
+        for(Hoboi hb: hobbs) {
+            if(hb.getName().compareToIgnoreCase(name) == 0) {
+                exists = true;
+                break;
+            }
+        }
+        if(!exists) {
+            hobbs.add(new Hoboi(hobbs.size(), name));
+            int idx = 0;
+            if(!logs.isEmpty()) {
+                while(logs.get(idx).getHob().getName().compareToIgnoreCase(name) < 0 && idx < logs.size()-1) idx++;
+            }
+            if(idx == logs.size()-1) {
+                if(logs.get(idx).getHob().getName().compareToIgnoreCase(name) < 0) idx++;
+            }
+            logs.add(idx, new HoboiLog(hobbs.get(hobbs.size()-1)));
 
-        save_dat();
+            hobblist.getAdapter().notifyItemInserted(idx);
+            hobblist.getAdapter().notifyItemRangeChanged(idx, 1);
+            tvDebug.setText(""+hobblist.getAdapter().getItemCount()+" Items");
+
+            save_dat();
+        } else {
+            Snackbar.make(btnAdd, "Det jibbit schoo", Snackbar.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public void onHoboiRemove() {
         tvDebug.setText(""+hobblist.getAdapter().getItemCount()+" Items");
+
         save_dat();
     }
 

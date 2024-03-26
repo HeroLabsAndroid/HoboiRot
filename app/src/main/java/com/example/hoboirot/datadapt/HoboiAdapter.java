@@ -1,8 +1,12 @@
 package com.example.hoboirot.datadapt;
 
+
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +25,7 @@ import com.example.hoboirot.R;
 import com.example.hoboirot.Util;
 import com.example.hoboirot.dialog.AddHoboiDialog;
 import com.example.hoboirot.dialog.HoboiHistDialog;
+import com.google.android.material.button.MaterialButton;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,7 +48,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvName, tvTimestamp;
-        private final Button btnDone, btnRemove, btnShowlog;
+        private final MaterialButton btnDone, btnRemove, btnShowlog;
 
 
 
@@ -52,12 +59,12 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
 
             tvTimestamp = (TextView) view.findViewById(R.id.TXTVIEW_lastperf);
             tvName = (TextView) view.findViewById(R.id.TXTVIEW_hoboiname);
-            btnDone = (Button) view.findViewById(R.id.BTN_hoboidone);
-            btnRemove = (Button) view.findViewById(R.id.BTN_removehoboi);
-            btnShowlog = (Button) view.findViewById(R.id.BTN_showlog);
+            btnDone = (MaterialButton) view.findViewById(R.id.BTN_hoboidone);
+            btnRemove = (MaterialButton) view.findViewById(R.id.BTN_removehoboi);
+            btnShowlog = (MaterialButton) view.findViewById(R.id.BTN_showlog);
         }
 
-        public Button getBtnShowlog() {
+        public MaterialButton getBtnShowlog() {
             return btnShowlog;
         }
 
@@ -65,11 +72,11 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
             return tvName;
         }
 
-        public Button getBtnDone() {
+        public MaterialButton getBtnDone() {
             return btnDone;
         }
 
-        public Button getBtnRemove() {
+        public MaterialButton getBtnRemove() {
             return btnRemove;
         }
 
@@ -115,29 +122,40 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
             viewHolder.getTvTimestamp().setText("TODAY");
         } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(position).get_last()));
 
-        if(localDataSet.get(position).done_today()) viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 128, 128, 128));
-        else viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 116, 67, 204));
+        if(!localDataSet.get(position).done_today()) {
+            Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_uncheck);
+            viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 116, 67, 204));
+            viewHolder.getBtnDone().setIcon(dr);
+        } else {
+            Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_check);
+            viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 128, 128, 128));
+            viewHolder.getBtnDone().setIcon(dr);
+        }
         viewHolder.getBtnDone().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(localDataSet.get(viewHolder.getAdapterPosition()).done_today()) {
+                    Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_uncheck);
                     viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 116, 67, 204));
+                    viewHolder.getBtnDone().setIcon(dr);
                     localDataSet.get(viewHolder.getAdapterPosition()).undo();
 
-                    if(localDataSet.get(position).never_performed()) {
+                    if(localDataSet.get(viewHolder.getAdapterPosition()).never_performed()) {
                         viewHolder.getTvTimestamp().setText("NEVER");
-                    } else if(localDataSet.get(position).done_today()) {
+                    } else if(localDataSet.get(viewHolder.getAdapterPosition()).done_today()) {
                         viewHolder.getTvTimestamp().setText("TODAY");
-                    } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(position).get_last()));
+                    } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
                 } else {
+                    Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_check);
                     viewHolder.getBtnDone().setBackgroundColor(Color.argb(255, 128, 128, 128));
+                    viewHolder.getBtnDone().setIcon(dr);
                     localDataSet.get(viewHolder.getAdapterPosition()).perform(LocalDateTime.now());
 
-                    if(localDataSet.get(position).never_performed()) {
+                    if(localDataSet.get(viewHolder.getAdapterPosition()).never_performed()) {
                         viewHolder.getTvTimestamp().setText("NEVER");
-                    } else if(localDataSet.get(position).done_today()) {
+                    } else if(localDataSet.get(viewHolder.getAdapterPosition()).done_today()) {
                         viewHolder.getTvTimestamp().setText("TODAY");
-                    } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(position).get_last()));
+                    } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
                 }
 
             }
@@ -171,7 +189,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
         viewHolder.getBtnShowlog().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {;
-                HoboiHistDialog hobDial = new HoboiHistDialog(localDataSet.get(viewHolder.getAdapterPosition()).getTS(), localDataSet.get(viewHolder.getAdapterPosition()).getHob().getName());
+                HoboiHistDialog hobDial = new HoboiHistDialog(localDataSet.get(viewHolder.getAdapterPosition()));
 
                 hobDial.show(fragMan, "showhobhist");
             }

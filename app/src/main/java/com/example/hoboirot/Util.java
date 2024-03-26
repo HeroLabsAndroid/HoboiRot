@@ -3,6 +3,7 @@ package com.example.hoboirot;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class Util {
@@ -17,11 +18,11 @@ public class Util {
         public String toString() {
             switch (this) {
                 case LAST_WEEK:
-                    return "Last Week";
+                    return "This Week";
                 case LAST_FORTNITE:
-                    return "Last Fortnight";
+                    return "This Fortnight";
                 case LONGER:
-                    return "Longer";
+                    return "Been a while";
                 default:
                     return "Never";
             }
@@ -48,5 +49,27 @@ public class Util {
     }
     public static String DateTimeToString(LocalDateTime ldt) {
         return String.format(Locale.getDefault(),"%2d.%2d.%4d", ldt.getDayOfMonth(), ldt.getMonth().getValue(), ldt.getYear());
+    }
+
+    public static ArrayList<HoboiLog> sort_hobois_by_name(ArrayList<HoboiLog> hl) {
+        ArrayList<HoboiLog> tmp = new ArrayList<>();
+
+        int len = hl.size();
+        int idx = 0;
+        while(idx < len) {
+            int minidx = 0;
+
+            for(int i=1; i<hl.size(); i++) {
+                if(hl.get(minidx).getHob().getName().compareToIgnoreCase(hl.get(i).getHob().getName())>0) {
+                    minidx =i;
+                }
+            }
+
+            tmp.add(hl.get(minidx));
+            hl.remove(minidx);
+            idx++;
+        }
+
+        return tmp;
     }
 }

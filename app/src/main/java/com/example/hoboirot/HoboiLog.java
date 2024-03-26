@@ -4,14 +4,20 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class HoboiLog implements Serializable {
+public class HoboiLog {
     private Hoboi hob;
     private ArrayList<LocalDateTime> timestamps = new ArrayList<>();
 
     public HoboiLog(Hoboi h) {
         this.hob = h;
+    }
+
+    public HoboiLog(HoboiLogSave hls) {
+        this.hob = new Hoboi(hls.hobsv);
+        this.timestamps = hls.log;
     }
 
     /**
@@ -89,5 +95,45 @@ public class HoboiLog implements Serializable {
         } else {
             hob.setDoneToday(false);
         }
+    }
+
+    public int in_last_week() {
+        LocalDateTime ldt = LocalDateTime.now();
+        int out = 0;
+        for(LocalDateTime l: timestamps) {
+            if(l.isAfter(ldt.minusDays(7))) out++;
+        }
+
+        return out;
+    }
+
+    public int in_last_month() {
+        LocalDateTime ldt = LocalDateTime.now();
+        int out = 0;
+        for(LocalDateTime l: timestamps) {
+            if(l.isAfter(ldt.minusMonths(1))) out++;
+        }
+
+        return out;
+    }
+
+    public float avg_week() {
+        if(timestamps.size()<1) return -1;
+        else {
+            long timeframe = (timestamps.get(0).until(LocalDateTime.now(), ChronoUnit.WEEKS))+1;
+            return timestamps.size()/(float)timeframe;
+        }
+    }
+
+    public float avg_month() {
+        if(timestamps.size()<1) return -1;
+        else {
+            long timeframe = (timestamps.get(0).until(LocalDateTime.now(), ChronoUnit.WEEKS))+1;
+            return timestamps.size()/(float)timeframe;
+        }
+    }
+
+    public HoboiLogSave toSave() {
+        return new HoboiLogSave(hob.toSave(), timestamps);
     }
 }

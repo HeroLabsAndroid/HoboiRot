@@ -20,7 +20,7 @@ public class DatProc {
             ObjectInputStream ois = new ObjectInputStream(fis);
             Log.d("RDDAT", String.format(Locale.getDefault(), "Opened file (%s) and Object Stream.", fis.toString()));
             int cnt = (int)ois.readObject();
-            for(int i=0; i< cnt; i++) dat.add((HoboiLog) ois.readObject());
+            for(int i=0; i< cnt; i++) dat.add(new HoboiLog((HoboiLogSave) ois.readObject()));
             Log.d("RDDAT", String.format(Locale.getDefault(),"Read %d objects.",dat.size()));
             ois.close();
             fis.close();
@@ -39,7 +39,7 @@ public class DatProc {
             Log.d("SAVDAT", "Opened Object Stream");
             oos.writeObject(logs.size());
             for(HoboiLog hl: logs) {
-                oos.writeObject(hl);
+                oos.writeObject(hl.toSave());
             }
             Log.d("SAVDAT", String.format(Locale.getDefault(), "Wrote %d Objects.", logs.size()));
             oos.close();

@@ -7,4 +7,7 @@
     <color name="DARK_txt">#FFF2F5FF</color>
     <color name="DARK_txt_scnd">#FF93A2D5</color>
     <color name="DARK_txt_hilite">#FFFF74D1</color>
+    <color name="ACC_1">#FF7443CC</color>
+    <color name="ACC_2">#FF8BC34A</color>
+    <color name="ACC_3">#FFE91E63</color>
 </resources>
