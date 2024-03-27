@@ -128,7 +128,7 @@ public class HoboiLog {
     public float avg_month() {
         if(timestamps.size()<1) return -1;
         else {
-            long timeframe = (timestamps.get(0).until(LocalDateTime.now(), ChronoUnit.WEEKS))+1;
+            long timeframe = (timestamps.get(0).until(LocalDateTime.now(), ChronoUnit.MONTHS))+1;
             return timestamps.size()/(float)timeframe;
         }
     }

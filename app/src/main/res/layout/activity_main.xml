@@ -9,11 +9,14 @@
 
     <Button
         android:id="@+id/BTN_addHoboi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="108dp"
+        android:layout_height="64dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:text="Add"
+        app:icon="@drawable/btn_new"
+        app:iconGravity="top"
+        app:iconPadding="16dp"
+        app:iconSize="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/TXTVW_debug" />
 
@@ -28,8 +31,10 @@
         android:background="@color/DARK_bg"
         app:layout_constraintBottom_toTopOf="@+id/BTN_addHoboi"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/TXTVW_debug"
@@ -45,10 +50,15 @@
     <Button
         android:id="@+id/BTN_stats"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_marginStart="32dp"
         android:backgroundTint="#BD49D1"
-        android:text="STATS"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        app:icon="@drawable/btn_stats"
+        app:iconGravity="top"
+        app:iconPadding="0dp"
+        app:iconSize="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/BTN_addHoboi"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_addHoboi" />
