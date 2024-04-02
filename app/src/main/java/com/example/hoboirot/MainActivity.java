@@ -18,6 +18,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Random;
 
@@ -66,6 +68,25 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         }
 
         logs = Util.sort_hobois_by_name(logs);
+        for(HoboiLog hl: logs) {
+            Collections.sort(hl.getTS());
+        }
+        for(HoboiLog hl: logs) {
+            ArrayList<Integer> rmv = new ArrayList<>();
+            LocalDateTime last = null;
+            for(int i=0; i<hl.getTS().size(); i++) {
+                if(last==null) {
+                    last = hl.getTS().get(i);
+                } else {
+                    if(Util.same_day(last, hl.getTS().get(i)))
+                       rmv.add(i);
+                    last = hl.getTS().get(i);
+                }
+            }
+            for(int r=rmv.size()-1; r>=0; r--) {
+                hl.getTS().remove((int)rmv.get(r));
+            }
+        }
 
         /*hobbs.add(new Hoboi(0, "Dummy1"));
         hobbs.add(new Hoboi(1, "Dummy2"));

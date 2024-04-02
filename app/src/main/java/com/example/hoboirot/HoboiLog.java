@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HoboiLog {
     private Hoboi hob;
@@ -40,6 +41,7 @@ public class HoboiLog {
      */
     public void perform(LocalDateTime ldt) {
         timestamps.add(ldt);
+        Collections.sort(timestamps);
         adjust_done_today();
     }
 
@@ -101,7 +103,7 @@ public class HoboiLog {
         LocalDateTime ldt = LocalDateTime.now();
         int out = 0;
         for(LocalDateTime l: timestamps) {
-            if(l.isAfter(ldt.minusDays(7))) out++;
+            if(l.isAfter(Util.end_of_day(ldt.minusWeeks(1)))) out++;
         }
 
         return out;

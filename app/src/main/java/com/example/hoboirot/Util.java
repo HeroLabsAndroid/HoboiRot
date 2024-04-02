@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Util {
 
@@ -43,7 +44,7 @@ public class Util {
     }
 
     public static RecCat getRecency(LocalDateTime ldt) {
-        if(ldt.isAfter(LocalDateTime.now().minusDays(7))) return RecCat.LAST_WEEK;
+        if(ldt.isAfter(LocalDateTime.now().minusWeeks(1))) return RecCat.LAST_WEEK;
         else if(ldt.isAfter(LocalDateTime.now().minusDays(14))) return RecCat.LAST_FORTNITE;
         else return RecCat.LONGER;
     }
@@ -71,5 +72,13 @@ public class Util {
         }
 
         return tmp;
+    }
+
+    public static LocalDateTime end_of_day(LocalDateTime ldt) {
+        return ldt.withHour(23).withMinute(59).withSecond(59);
+    }
+
+    public static boolean same_day(LocalDateTime l1, LocalDateTime l2) {
+        return (l1.getDayOfYear() == l2.getDayOfYear() && l1.getYear() == l2.getYear());
     }
 }
