@@ -74,7 +74,7 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTvDatetime().setText(Util.DateTimeToString(localDataSet.get(localDataSet.size()-1-position)));
+        viewHolder.getTvDatetime().setText(String.format("%s \r\n(%s days ago)", Util.DateTimeToString(localDataSet.get(localDataSet.size()-1-position)), Util.days_since(localDataSet.get(localDataSet.size()-1-position))));
         viewHolder.getTvRecentCat().setText(Util.getRecency(localDataSet.get(localDataSet.size()-1-position)).toString());
 
     }

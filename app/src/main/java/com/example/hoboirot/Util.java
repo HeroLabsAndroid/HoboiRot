@@ -3,6 +3,7 @@ package com.example.hoboirot;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -52,6 +53,10 @@ public class Util {
         return String.format(Locale.getDefault(),"%2d.%2d.%4d", ldt.getDayOfMonth(), ldt.getMonth().getValue(), ldt.getYear());
     }
 
+    public static long days_since(LocalDateTime ldt) {
+        return ldt.until(LocalDateTime.now(), ChronoUnit.DAYS);
+    }
+
     public static ArrayList<HoboiLog> sort_hobois_by_name(ArrayList<HoboiLog> hl) {
         ArrayList<HoboiLog> tmp = new ArrayList<>();
 
@@ -75,6 +80,10 @@ public class Util {
     }
 
     public static LocalDateTime end_of_day(LocalDateTime ldt) {
+        return ldt.withHour(23).withMinute(59).withSecond(59);
+    }
+
+    public static LocalDateTime start_of_day(LocalDateTime ldt) {
         return ldt.withHour(23).withMinute(59).withSecond(59);
     }
 

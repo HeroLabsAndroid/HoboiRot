@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,8 @@ public class HoboiHistDialog extends DialogFragment {
 
     RecyclerView hobhist;
     TextView tvHobtit;
+
+    TextView tvLog;
     ArrayList<LocalDateTime> timestamps = new ArrayList<>();
     String hobtit;
 
@@ -59,6 +62,7 @@ public class HoboiHistDialog extends DialogFragment {
         HoboiHistAdapter hobhistAdapt = new HoboiHistAdapter(timestamps, requireContext());
         hobhist.setAdapter(hobhistAdapt);
 
+
         builder.setView(layout);
 
         View lastweek = layout.findViewById(R.id.TITFRQVW_lastweek);
@@ -88,6 +92,20 @@ public class HoboiHistDialog extends DialogFragment {
             tvFreqNames.get(i).setText(Const.HOBFREQTIT[i]);
         }
 
+        tvLog = layout.findViewById(R.id.TV_hobhist_log);
+        tvLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(hobhist.getVisibility()==View.VISIBLE) {
+                    hobhist.setVisibility(View.GONE);
+                    tvLog.setTextColor(ContextCompat.getColor(requireContext(), R.color.DARK_txt_grayout));
+                }
+                else {
+                    hobhist.setVisibility(View.VISIBLE);
+                    tvLog.setTextColor(ContextCompat.getColor(requireContext(), R.color.DARK_txt));
+                }
+            }
+        });
 
         // Create the AlertDialog object and return it.
         return builder.create();
