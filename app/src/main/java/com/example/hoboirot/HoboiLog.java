@@ -122,8 +122,8 @@ public class HoboiLog {
     public float avg_week() {
         if(timestamps.size()<1) return -1;
         else {
-            long timeframe = (timestamps.get(0).until(LocalDateTime.now(), ChronoUnit.WEEKS))+1;
-            return timestamps.size()/(float)timeframe;
+            long timeframe = (timestamps.get(0).until(Util.end_of_day(LocalDateTime.now()), ChronoUnit.WEEKS));
+            return timeframe < 1 ? -1 : timestamps.size()/(float)timeframe;
         }
     }
 

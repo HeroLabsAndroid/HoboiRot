@@ -53,7 +53,7 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
      */
     public HoboiHistAdapter(ArrayList<LocalDateTime> dataSet, Context c) {
         localDataSet = dataSet;
-        Collections.reverse(localDataSet);
+        Collections.sort(localDataSet);
         ctx = c;
     }
 
@@ -74,8 +74,8 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTvDatetime().setText(Util.DateTimeToString(localDataSet.get(position)));
-        viewHolder.getTvRecentCat().setText(Util.getRecency(localDataSet.get(position)).toString());
+        viewHolder.getTvDatetime().setText(Util.DateTimeToString(localDataSet.get(localDataSet.size()-1-position)));
+        viewHolder.getTvRecentCat().setText(Util.getRecency(localDataSet.get(localDataSet.size()-1-position)).toString());
 
     }
 
