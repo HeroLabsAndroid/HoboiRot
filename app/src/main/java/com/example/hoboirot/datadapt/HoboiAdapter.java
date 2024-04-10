@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -50,6 +51,8 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
         private final TextView tvName, tvTimestamp;
         private final MaterialButton btnDone, btnRemove, btnShowlog;
 
+        private final FrameLayout frlytReccatbar;
+
 
 
 
@@ -62,8 +65,10 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
             btnDone = (MaterialButton) view.findViewById(R.id.BTN_hoboidone);
             btnRemove = (MaterialButton) view.findViewById(R.id.BTN_removehoboi);
             btnShowlog = (MaterialButton) view.findViewById(R.id.BTN_showlog);
+            frlytReccatbar = (FrameLayout) view.findViewById(R.id.FRMLYT_recindic);
         }
 
+        public FrameLayout getFrlytReccatbar() { return frlytReccatbar; }
         public MaterialButton getBtnShowlog() {
             return btnShowlog;
         }
@@ -115,6 +120,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.getTvName().setText(localDataSet.get(position).getHob().getName());
+        viewHolder.getFrlytReccatbar().setBackgroundColor(localDataSet.get(position).getReccat().toColor(ctx));
 
         if(localDataSet.get(position).never_performed()) {
             viewHolder.getTvTimestamp().setText("NEVER");
@@ -157,6 +163,8 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
                         viewHolder.getTvTimestamp().setText("TODAY");
                     } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
                 }
+
+                viewHolder.getFrlytReccatbar().setBackgroundColor(localDataSet.get(viewHolder.getAdapterPosition()).getReccat().toColor(ctx));
 
             }
         });

@@ -13,4 +13,9 @@
     <color name="ACC_3">#FFE91E63</color>
     <color name="ACC_4">#FFC2B2F8</color>
     <color name="ACC_5">#FF61CEFA</color>
+
+    <color name="RECCAT_1">#FF46F26C</color>
+    <color name="RECCAT_2">#FFEFF246</color>
+    <color name="RECCAT_3">#FFF24666</color>
+    <color name="RECCAT_4">#FF252E42</color>
 </resources>

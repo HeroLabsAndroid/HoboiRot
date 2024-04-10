@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="@color/DARK_bg_shadow">
 
+    <FrameLayout
+        android:id="@+id/frameLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/DARK_txt_hilite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TITFRQVW_monthly">
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/TV_hobtit"
         android:layout_width="wrap_content"
@@ -22,13 +33,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
-        android:id="@+id/frameLayout4"
+        android:id="@+id/frameLayout5"
         android:layout_width="match_parent"
         android:layout_height="4dp"
+        android:layout_marginTop="8dp"
         android:background="@color/DARK_txt_hilite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TITFRQVW_monthly">
+        app:layout_constraintTop_toBottomOf="@+id/TV_hobhist_avgevery">
 
     </FrameLayout>
 
@@ -69,13 +81,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TITFRQVW_weekly" />
 
+    <TextView
+        android:id="@+id/TV_hobhist_avgevery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="TextView"
+        android:textColor="@color/DARK_txt"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout4" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout4"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout5"
         tools:visibility="visible">
 
         <TextView
@@ -95,7 +120,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RCLVW_hobhist"
             android:layout_width="0dp"
-            android:layout_height="420dp"
+            android:layout_height="360dp"
             android:layout_marginTop="8dp"
             android:isScrollContainer="true"
             android:scrollIndicators="right"

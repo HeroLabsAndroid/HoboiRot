@@ -52,6 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-condensed"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
@@ -60,21 +61,18 @@
         android:text="TextView"
         android:textColor="@color/DARK_txt"
         android:textSize="32sp"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_hoboidone"
         app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BTN_hoboidone" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/TXTVIEW_lastperf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textColor="@color/DARK_txt"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="@+id/TXTVIEW_hoboiname"
         app:layout_constraintTop_toBottomOf="@+id/TXTVIEW_hoboiname" />
 
@@ -111,5 +109,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/DARK_bg_shadow"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/TXTVIEW_lastperf"
+        app:layout_constraintEnd_toStartOf="@+id/TXTVIEW_lastperf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TXTVIEW_lastperf">
+
+        <FrameLayout
+            android:id="@+id/FRMLYT_recindic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

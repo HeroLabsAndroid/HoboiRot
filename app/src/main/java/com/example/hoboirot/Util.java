@@ -1,12 +1,16 @@
 package com.example.hoboirot;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+import android.util.DisplayMetrics;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
 public class Util {
 
@@ -27,6 +31,19 @@ public class Util {
                     return "Been a while";
                 default:
                     return "Never";
+            }
+        }
+
+        public int toColor(Context c) {
+            switch(this) {
+                case LAST_WEEK:
+                    return ContextCompat.getColor(c, R.color.RECCAT_1);
+                case LAST_FORTNITE:
+                    return ContextCompat.getColor(c, R.color.RECCAT_2);
+                case LONGER:
+                    return ContextCompat.getColor(c, R.color.RECCAT_3);
+                default:
+                    return ContextCompat.getColor(c, R.color.RECCAT_4);
             }
         }
     }
@@ -54,7 +71,7 @@ public class Util {
     }
 
     public static long days_since(LocalDateTime ldt) {
-        return ldt.until(LocalDateTime.now(), ChronoUnit.DAYS);
+        return ldt.toLocalDate().until(LocalDate.now(), ChronoUnit.DAYS);
     }
 
     public static ArrayList<HoboiLog> sort_hobois_by_name(ArrayList<HoboiLog> hl) {
@@ -89,5 +106,13 @@ public class Util {
 
     public static boolean same_day(LocalDateTime l1, LocalDateTime l2) {
         return (l1.getDayOfYear() == l2.getDayOfYear() && l1.getYear() == l2.getYear());
+    }
+
+    public static float dpsToPx(float dps, Context c) {
+        return dps * ((float) c.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    public static float pxToDps(float px, Context c) {
+        return px / ((float) c.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 }

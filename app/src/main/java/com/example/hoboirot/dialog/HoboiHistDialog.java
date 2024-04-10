@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hoboirot.HoboiLog;
 import com.example.hoboirot.R;
+import com.example.hoboirot.Util;
 import com.example.hoboirot.datadapt.HoboiHistAdapter;
 import com.example.hoboirot.Const;
 
@@ -29,6 +30,8 @@ public class HoboiHistDialog extends DialogFragment {
     RecyclerView hobhist;
     TextView tvHobtit;
 
+    TextView tvAvgEvry;
+
     TextView tvLog;
     ArrayList<LocalDateTime> timestamps = new ArrayList<>();
     String hobtit;
@@ -39,7 +42,9 @@ public class HoboiHistDialog extends DialogFragment {
     ArrayList<TextView> tvFreqNames = new ArrayList<>();
 
     public HoboiHistDialog(HoboiLog hoblog) {
-        timestamps = hoblog.getTS();
+        for(LocalDateTime ldt: hoblog.getTS()) {
+            timestamps.add(Util.start_of_day(ldt));
+        }
         hobtit = hoblog.getHob().getName();
         hl = hoblog;
     }
@@ -61,6 +66,9 @@ public class HoboiHistDialog extends DialogFragment {
 
         HoboiHistAdapter hobhistAdapt = new HoboiHistAdapter(timestamps, requireContext());
         hobhist.setAdapter(hobhistAdapt);
+
+        tvAvgEvry = layout.findViewById(R.id.TV_hobhist_avgevery);
+        tvAvgEvry.setText(String.format(Locale.getDefault(), "~Every %.2f days.", hl.avg_every()));
 
 
         builder.setView(layout);

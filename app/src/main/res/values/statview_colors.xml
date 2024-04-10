@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="STVW_bg">#FF36486D</color>
+    <color name="STVW_bar">#FFF347D6</color>
+    <color name="STVW_line">#FFB3CFF6</color>
+    <color name="STVW_txt">#FFF8FBFF</color>
+    <color name="STVW_hilite">#FF29F5BB</color> //49F365
+</resources>

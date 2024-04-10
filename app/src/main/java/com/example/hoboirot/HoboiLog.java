@@ -1,5 +1,7 @@
 package com.example.hoboirot;
 
+import static java.time.temporal.ChronoUnit.WEEKS;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -90,8 +92,7 @@ public class HoboiLog {
      */
     public void adjust_done_today() {
         if(timestamps.size() > 0) {
-            if(timestamps.get(timestamps.size()-1).getDayOfYear() == LocalDateTime.now().getDayOfYear()
-            && timestamps.get(timestamps.size()-1).getYear() == LocalDateTime.now().getYear()) {
+            if(timestamps.get(timestamps.size()-1).toLocalDate().isEqual(LocalDate.now())) {
                 hob.setDoneToday(true);
             } else hob.setDoneToday(false);
         } else {
@@ -100,20 +101,20 @@ public class HoboiLog {
     }
 
     public int in_last_week() {
-        LocalDateTime ldt = LocalDateTime.now();
+        LocalDate ldt = LocalDate.now();
         int out = 0;
         for(LocalDateTime l: timestamps) {
-            if(l.isAfter(Util.end_of_day(ldt.minusWeeks(1)))) out++;
+            if(l.toLocalDate().isAfter(ldt.minusWeeks(1))) out++;
         }
 
         return out;
     }
 
     public int in_last_month() {
-        LocalDateTime ldt = LocalDateTime.now();
+        LocalDate ldt = LocalDateTime.now().toLocalDate();
         int out = 0;
         for(LocalDateTime l: timestamps) {
-            if(l.isAfter(ldt.minusMonths(1))) out++;
+            if(l.toLocalDate().isAfter(ldt.minusMonths(1))) out++;
         }
 
         return out;
@@ -122,7 +123,12 @@ public class HoboiLog {
     public float avg_week() {
         if(timestamps.size()<1) return -1;
         else {
-            long timeframe = (timestamps.get(0).until(Util.end_of_day(LocalDateTime.now()), ChronoUnit.WEEKS));
+            LocalDate earliest = timestamps.get(0).toLocalDate();
+            for(LocalDateTime ldt: timestamps) {
+                if(ldt.toLocalDate().isBefore(earliest)) earliest = ldt.toLocalDate();
+            }
+
+            long timeframe = (earliest.until(LocalDate.now(), ChronoUnit.WEEKS));
             return timeframe < 1 ? -1 : timestamps.size()/(float)timeframe;
         }
     }
@@ -130,9 +136,35 @@ public class HoboiLog {
     public float avg_month() {
         if(timestamps.size()<1) return -1;
         else {
-            long timeframe = (timestamps.get(0).until(LocalDateTime.now(), ChronoUnit.MONTHS))+1;
-            return timestamps.size()/(float)timeframe;
+            LocalDate earliest = timestamps.get(0).toLocalDate();
+            for(LocalDateTime ldt: timestamps) {
+                if(ldt.toLocalDate().isBefore(earliest)) earliest = ldt.toLocalDate();
+            }
+
+            long timeframe = (earliest.until(LocalDate.now(), ChronoUnit.MONTHS))+1;
+            return timeframe < 1 ? -1 : timestamps.size()/(float)timeframe;
         }
+    }
+
+    /**
+     * Calculates every how many days hoboi is performed on average.
+     *
+     * @return  average timeframe between hoboi performances
+     */
+    public float avg_every() {
+        if(timestamps.size()<2) return -1;
+
+        long[] timeframes = new long[timestamps.size()-1];
+        for(int i=0; i<timestamps.size()-1; i++) {
+            timeframes[i] = timestamps.get(i).toLocalDate().until(timestamps.get(i+1).toLocalDate(), ChronoUnit.DAYS);
+        }
+
+        float out = 0;
+        for(int i=0; i< timeframes.length; i++) {
+            out += timeframes[i];
+        }
+
+        return out/(float)timeframes.length;
     }
 
     public HoboiLogSave toSave() {
