@@ -14,8 +14,10 @@
     <color name="ACC_4">#FFC2B2F8</color>
     <color name="ACC_5">#FF61CEFA</color>
 
+    <color name="RECCAT_0">#FF6AE8DE</color>
     <color name="RECCAT_1">#FF46F26C</color>
     <color name="RECCAT_2">#FFEFF246</color>
     <color name="RECCAT_3">#FFF24666</color>
     <color name="RECCAT_4">#FF252E42</color>
+    <color name="RECCAT_5">#FF993146</color>
 </resources>

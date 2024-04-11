@@ -16,13 +16,17 @@ public class Util {
 
     public enum RecCat {
 
-        LAST_WEEK, LAST_FORTNITE, LONGER, NEVER;
+        TODAY, LAST_WEEK, LAST_FORTNITE, MONTH, LONGER, NEVER;
 
 
         @NonNull
         @Override
         public String toString() {
             switch (this) {
+                case TODAY:
+                    return "TODAY";
+                case MONTH:
+                    return "This Month";
                 case LAST_WEEK:
                     return "This Week";
                 case LAST_FORTNITE:
@@ -31,17 +35,22 @@ public class Util {
                     return "Been a while";
                 default:
                     return "Never";
+
             }
         }
 
         public int toColor(Context c) {
             switch(this) {
+                case TODAY:
+                    return ContextCompat.getColor(c, R.color.RECCAT_0);
                 case LAST_WEEK:
                     return ContextCompat.getColor(c, R.color.RECCAT_1);
                 case LAST_FORTNITE:
                     return ContextCompat.getColor(c, R.color.RECCAT_2);
                 case LONGER:
                     return ContextCompat.getColor(c, R.color.RECCAT_3);
+                case MONTH:
+                    return ContextCompat.getColor(c, R.color.RECCAT_5);
                 default:
                     return ContextCompat.getColor(c, R.color.RECCAT_4);
             }
@@ -51,10 +60,14 @@ public class Util {
     public static RecCat CatFromOrdinal(int ord) {
         switch(ord) {
             case 0:
-                return RecCat.LAST_WEEK;
+                return RecCat.TODAY;
             case 1:
-                return RecCat.LAST_FORTNITE;
+                return RecCat.LAST_WEEK;
             case 2:
+                return RecCat.LAST_FORTNITE;
+            case 3:
+                return RecCat.MONTH;
+            case 4:
                 return RecCat.LONGER;
             default:
                 return RecCat.NEVER;
@@ -62,8 +75,10 @@ public class Util {
     }
 
     public static RecCat getRecency(LocalDateTime ldt) {
-        if(ldt.isAfter(LocalDateTime.now().minusWeeks(1))) return RecCat.LAST_WEEK;
-        else if(ldt.isAfter(LocalDateTime.now().minusDays(14))) return RecCat.LAST_FORTNITE;
+        if(ldt.toLocalDate().isEqual(LocalDate.now())) return RecCat.TODAY;
+        else if(ldt.toLocalDate().isAfter(LocalDate.now().minusWeeks(1))) return RecCat.LAST_WEEK;
+        else if(ldt.toLocalDate().isAfter(LocalDate.now().minusDays(14))) return RecCat.LAST_FORTNITE;
+        else if(ldt.toLocalDate().isAfter(LocalDate.now().minusMonths(1))) return RecCat.MONTH;
         else return RecCat.LONGER;
     }
     public static String DateTimeToString(LocalDateTime ldt) {
