@@ -1,4 +1,4 @@
-package com.example.hoboirot;
+package com.example.hoboirot.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -11,19 +11,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.hoboirot.DatProc;
+import com.example.hoboirot.HobCat;
+import com.example.hoboirot.Hoboi;
+import com.example.hoboirot.HoboiLog;
+import com.example.hoboirot.R;
+import com.example.hoboirot.Util;
 import com.example.hoboirot.datadapt.HoboiAdapter;
 import com.example.hoboirot.dialog.AddHoboiDialog;
 import com.example.hoboirot.dialog.HoboiStatDialog;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements AddHoboiDialog.AddHoboiDialogListener, HoboiAdapter.HoboiRemoveListener {
+public class MainActivity extends AppCompatActivity implements AddHoboiDialog.AddHoboiDialogListener, HoboiAdapter.HoboiRemoveListener, HoboiAdapter.SnackbarListener {
 
     ArrayList<Hoboi> hobbs = new ArrayList<>();
 
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
     public void show_stats() {
         ArrayList<ArrayList<HoboiLog>> hobs_in_cats = new ArrayList<>();
 
-        for(int i=0; i<Util.RecCat.values().length; i++) {
+        for(int i = 0; i< Util.RecCat.values().length; i++) {
             hobs_in_cats.add(new ArrayList<>());
         }
 
@@ -69,22 +74,22 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
 
         logs = Util.sort_hobois_by_name(logs);
         for(HoboiLog hl: logs) {
-            Collections.sort(hl.getTS());
+            Collections.sort(hl.getLog());
         }
         for(HoboiLog hl: logs) {
             ArrayList<Integer> rmv = new ArrayList<>();
-            LocalDateTime last = null;
-            for(int i=0; i<hl.getTS().size(); i++) {
+            LocalDate last = null;
+            for(int i=0; i<hl.getLog().size(); i++) {
                 if(last==null) {
-                    last = hl.getTS().get(i);
+                    last = hl.getLog().get(i).ld;
                 } else {
-                    if(Util.same_day(last, hl.getTS().get(i)))
+                    if(last.isEqual(hl.getLog().get(i).ld))
                        rmv.add(i);
-                    last = hl.getTS().get(i);
+                    last = hl.getLog().get(i).ld;
                 }
             }
             for(int r=rmv.size()-1; r>=0; r--) {
-                hl.getTS().remove((int)rmv.get(r));
+                hl.getLog().remove((int)rmv.get(r));
             }
         }
 
@@ -173,5 +178,11 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
     protected void onStop() {
         save_dat();
         super.onStop();
+    }
+
+    //Implementation of SnackbarListener Interface from HoboiAdapter
+    @Override
+    public void sendMsg(String s) {
+        Snackbar.make(hobblist, s, Snackbar.LENGTH_SHORT).show();
     }
 }

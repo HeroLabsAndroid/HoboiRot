@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class HoboiLogSave implements Serializable {
    HoboiSave hobsv;
-   ArrayList<LocalDateTime> log;
+   ArrayList<HobPerf> log;
 
-    public HoboiLogSave(HoboiSave hobsv, ArrayList<LocalDateTime> log) {
+    public HoboiLogSave(HoboiSave hobsv, ArrayList<HobPerf> log) {
         this.hobsv = hobsv;
         this.log = log;
     }

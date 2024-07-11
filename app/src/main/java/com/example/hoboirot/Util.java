@@ -48,9 +48,9 @@ public class Util {
                 case LAST_FORTNITE:
                     return ContextCompat.getColor(c, R.color.RECCAT_2);
                 case LONGER:
-                    return ContextCompat.getColor(c, R.color.RECCAT_3);
-                case MONTH:
                     return ContextCompat.getColor(c, R.color.RECCAT_5);
+                case MONTH:
+                    return ContextCompat.getColor(c, R.color.RECCAT_3);
                 default:
                     return ContextCompat.getColor(c, R.color.RECCAT_4);
             }
@@ -74,19 +74,23 @@ public class Util {
         }
     }
 
-    public static RecCat getRecency(LocalDateTime ldt) {
-        if(ldt.toLocalDate().isEqual(LocalDate.now())) return RecCat.TODAY;
-        else if(ldt.toLocalDate().isAfter(LocalDate.now().minusWeeks(1))) return RecCat.LAST_WEEK;
-        else if(ldt.toLocalDate().isAfter(LocalDate.now().minusDays(14))) return RecCat.LAST_FORTNITE;
-        else if(ldt.toLocalDate().isAfter(LocalDate.now().minusMonths(1))) return RecCat.MONTH;
+    public static RecCat getRecency(LocalDate ldt) {
+        if(ldt.isEqual(LocalDate.now())) return RecCat.TODAY;
+        else if(ldt.isAfter(LocalDate.now().minusWeeks(1))) return RecCat.LAST_WEEK;
+        else if(ldt.isAfter(LocalDate.now().minusDays(14))) return RecCat.LAST_FORTNITE;
+        else if(ldt.isAfter(LocalDate.now().minusMonths(1))) return RecCat.MONTH;
         else return RecCat.LONGER;
     }
     public static String DateTimeToString(LocalDateTime ldt) {
         return String.format(Locale.getDefault(),"%2d.%2d.%4d", ldt.getDayOfMonth(), ldt.getMonth().getValue(), ldt.getYear());
     }
 
-    public static long days_since(LocalDateTime ldt) {
-        return ldt.toLocalDate().until(LocalDate.now(), ChronoUnit.DAYS);
+    public static String DateToString(LocalDate ld) {
+        return String.format(Locale.getDefault(),"%2d.%2d.%4d", ld.getDayOfMonth(), ld.getMonth().getValue(), ld.getYear());
+    }
+
+    public static long days_since(LocalDate ldt) {
+        return ldt.until(LocalDate.now(), ChronoUnit.DAYS);
     }
 
     public static ArrayList<HoboiLog> sort_hobois_by_name(ArrayList<HoboiLog> hl) {

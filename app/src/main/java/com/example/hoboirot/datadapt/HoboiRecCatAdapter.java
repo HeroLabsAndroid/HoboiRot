@@ -74,7 +74,7 @@ public class HoboiRecCatAdapter extends RecyclerView.Adapter<HoboiRecCatAdapter.
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTvDatetime().setText(localDataSet.get(position).get_last() == null ? "NEVER" : Util.DateTimeToString(localDataSet.get(position).get_last()));
+        viewHolder.getTvDatetime().setText(localDataSet.get(position).get_last() == null ? "NEVER" : Util.DateToString(localDataSet.get(position).get_last()));
         viewHolder.getTvName().setText(localDataSet.get(position).getHob().getName());
 
     }

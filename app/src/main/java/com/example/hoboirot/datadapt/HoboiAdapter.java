@@ -1,6 +1,7 @@
 package com.example.hoboirot.datadapt;
 
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -25,21 +27,35 @@ import com.example.hoboirot.HoboiLog;
 import com.example.hoboirot.R;
 import com.example.hoboirot.Util;
 import com.example.hoboirot.dialog.AddHoboiDialog;
+import com.example.hoboirot.dialog.DatePickerFragment;
 import com.example.hoboirot.dialog.HoboiHistDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> {
+public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> implements DatePickerDialog.OnDateSetListener {
+
+
 
     public interface HoboiRemoveListener {
         public void onHoboiRemove();
     }
 
+    public interface SnackbarListener {
+        public void sendMsg(String s);
+    }
+
     HoboiRemoveListener hobremlisten;
+    SnackbarListener snacclisten;
     FragmentManager fragMan;
     Context ctx;
+
+    int longclickidx = -1;
 
     private ArrayList<HoboiLog> localDataSet;
 
@@ -98,6 +114,8 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
     public HoboiAdapter(ArrayList<HoboiLog> dataSet, Context c, FragmentManager fm) {
         localDataSet = dataSet;
         hobremlisten = (HoboiRemoveListener) c;
+        snacclisten = (SnackbarListener) c;
+
         fragMan = fm;
         ctx = c;
     }
@@ -126,7 +144,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
             viewHolder.getTvTimestamp().setText("NEVER");
         } else if(localDataSet.get(position).done_today()) {
             viewHolder.getTvTimestamp().setText("TODAY");
-        } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(position).get_last()));
+        } else viewHolder.getTvTimestamp().setText(Util.DateToString(localDataSet.get(position).get_last()));
 
         if(!localDataSet.get(position).done_today()) {
             Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_uncheck);
@@ -150,7 +168,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
                         viewHolder.getTvTimestamp().setText("NEVER");
                     } else if(localDataSet.get(viewHolder.getAdapterPosition()).done_today()) {
                         viewHolder.getTvTimestamp().setText("TODAY");
-                    } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
+                    } else viewHolder.getTvTimestamp().setText(Util.DateToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
                 } else {
                     Drawable dr = ContextCompat.getDrawable(ctx, R.drawable.btn_check);
                     viewHolder.getBtnDone().setBackgroundColor(ContextCompat.getColor(ctx, R.color.ACC_4));
@@ -161,11 +179,21 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
                         viewHolder.getTvTimestamp().setText("NEVER");
                     } else if(localDataSet.get(viewHolder.getAdapterPosition()).done_today()) {
                         viewHolder.getTvTimestamp().setText("TODAY");
-                    } else viewHolder.getTvTimestamp().setText(Util.DateTimeToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
+                    } else viewHolder.getTvTimestamp().setText(Util.DateToString(localDataSet.get(viewHolder.getAdapterPosition()).get_last()));
                 }
 
                 viewHolder.getFrlytReccatbar().setBackgroundColor(localDataSet.get(viewHolder.getAdapterPosition()).getReccat().toColor(ctx));
 
+            }
+        });
+
+        viewHolder.getBtnDone().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                longclickidx = viewHolder.getAdapterPosition();
+                DatePickerFragment dpFrag = new DatePickerFragment(HoboiAdapter.this);
+                dpFrag.show(fragMan, "datepicc");
+                return true;
             }
         });
 
@@ -214,5 +242,22 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return localDataSet.size();
+    }
+
+    //Called when date selected in date picker (upon long-click on doneBtn)
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        int idx = longclickidx;
+        longclickidx = -1;
+
+        if(idx >= 0) {
+            if(!localDataSet.get(idx).performed_on(LocalDate.of(year, month+1, dayOfMonth))) {
+                localDataSet.get(idx).perform(LocalDate.of(year, month+1, dayOfMonth).atStartOfDay());
+                snacclisten.sendMsg("Nachtrag: "+localDataSet.get(idx).getHob().getName()+" am "+dayOfMonth+"."+(month+1)+"."+year);
+            } else {
+                localDataSet.get(idx).unperform(LocalDate.of(year, month+1, dayOfMonth));
+                snacclisten.sendMsg("Rückgängig: "+localDataSet.get(idx).getHob().getName()+" am "+dayOfMonth+"."+(month+1)+"."+year);
+            }
+        }
     }
 }

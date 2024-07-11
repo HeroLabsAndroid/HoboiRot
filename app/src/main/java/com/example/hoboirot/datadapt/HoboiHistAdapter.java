@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hoboirot.HobPerf;
 import com.example.hoboirot.R;
 import com.example.hoboirot.Util;
 
@@ -17,7 +18,7 @@ import java.util.Collections;
 
 public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.ViewHolder> {
 
-    private ArrayList<LocalDateTime> localDataSet;
+    private ArrayList<HobPerf> localDataSet;
     private Context ctx;
 
     /**
@@ -33,7 +34,11 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
             return tvRecentCat;
         }
 
-        private final TextView tvDatetime, tvRecentCat;
+        public TextView getTvSuppl() {
+            return tvSuppl;
+        }
+
+        private final TextView tvDatetime, tvRecentCat, tvSuppl;
 
 
         public ViewHolder(View view) {
@@ -42,6 +47,7 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
 
             tvDatetime = (TextView) view.findViewById(R.id.TV_hob_datetime);
             tvRecentCat = (TextView) view.findViewById(R.id.TV_hob_reccat);
+            tvSuppl = (TextView) view.findViewById(R.id.TV_hob_is_suppl);
         }
 
     }
@@ -51,7 +57,7 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
      *
      * @param dataSet ArrayList of Hobois
      */
-    public HoboiHistAdapter(ArrayList<LocalDateTime> dataSet, Context c) {
+    public HoboiHistAdapter(ArrayList<HobPerf> dataSet, Context c) {
         localDataSet = dataSet;
         Collections.sort(localDataSet);
         ctx = c;
@@ -74,8 +80,10 @@ public class HoboiHistAdapter extends RecyclerView.Adapter<HoboiHistAdapter.View
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTvDatetime().setText(String.format("%s \r\n(%s days ago)", Util.DateTimeToString(localDataSet.get(localDataSet.size()-1-position)), Util.days_since(localDataSet.get(localDataSet.size()-1-position))));
-        viewHolder.getTvRecentCat().setText(Util.getRecency(localDataSet.get(localDataSet.size()-1-position)).toString());
+
+        viewHolder.getTvSuppl().setText(localDataSet.get(localDataSet.size()-1-position).suppl ? ctx.getString(R.string.NAME_is_suppl) : " ");
+        viewHolder.getTvDatetime().setText(String.format("%s \r\n(%s days ago)", Util.DateToString(localDataSet.get(localDataSet.size()-1-position).ld), Util.days_since(localDataSet.get(localDataSet.size()-1-position).ld)));
+        viewHolder.getTvRecentCat().setText(Util.getRecency(localDataSet.get(localDataSet.size()-1-position).ld).toString());
 
     }
 

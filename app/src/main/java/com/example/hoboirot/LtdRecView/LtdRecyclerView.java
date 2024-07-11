@@ -12,7 +12,7 @@ import com.example.hoboirot.Util;
 
 public class LtdRecyclerView extends RecyclerView {
 
-    private int maxheight = 420;
+    private int maxheight = 360;
 
 
     public int getMaxheight() {

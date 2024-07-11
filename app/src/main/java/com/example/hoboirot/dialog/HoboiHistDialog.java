@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hoboirot.HobPerf;
 import com.example.hoboirot.HoboiLog;
 import com.example.hoboirot.R;
 import com.example.hoboirot.Util;
@@ -33,7 +34,7 @@ public class HoboiHistDialog extends DialogFragment {
     TextView tvAvgEvry;
 
     TextView tvLog;
-    ArrayList<LocalDateTime> timestamps = new ArrayList<>();
+    ArrayList<HobPerf> log = new ArrayList<>();
     String hobtit;
 
     HoboiLog hl;
@@ -42,9 +43,7 @@ public class HoboiHistDialog extends DialogFragment {
     ArrayList<TextView> tvFreqNames = new ArrayList<>();
 
     public HoboiHistDialog(HoboiLog hoblog) {
-        for(LocalDateTime ldt: hoblog.getTS()) {
-            timestamps.add(Util.start_of_day(ldt));
-        }
+        log = hoblog.getLog();
         hobtit = hoblog.getHob().getName();
         hl = hoblog;
     }
@@ -64,7 +63,7 @@ public class HoboiHistDialog extends DialogFragment {
         hobhist = (RecyclerView) layout.findViewById(R.id.RCLVW_hobhist);
         hobhist.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        HoboiHistAdapter hobhistAdapt = new HoboiHistAdapter(timestamps, requireContext());
+        HoboiHistAdapter hobhistAdapt = new HoboiHistAdapter(log, requireContext());
         hobhist.setAdapter(hobhistAdapt);
 
         tvAvgEvry = layout.findViewById(R.id.TV_hobhist_avgevery);
