@@ -4,21 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DARK_bg"
+    android:background="@color/DARK_bg_shadow"
     tools:context=".activities.MainActivity">
 
     <Button
         android:id="@+id/BTN_addHoboiCat"
         android:layout_width="108dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="80dp"
         android:layout_marginBottom="32dp"
         app:icon="@drawable/btn_newcat"
         app:iconGravity="top"
         app:iconPadding="16dp"
         app:iconSize="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/TXTVW_debug" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCLVW_hoboilist"
@@ -51,7 +51,6 @@
         android:id="@+id/BTN_stats"
         android:layout_width="wrap_content"
         android:layout_height="64dp"
-        android:layout_marginStart="32dp"
         android:backgroundTint="#BD49D1"
         android:foregroundGravity="center"
         android:gravity="center"
@@ -60,6 +59,7 @@
         app:iconPadding="0dp"
         app:iconSize="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/BTN_addHoboiCat"
+        app:layout_constraintEnd_toStartOf="@+id/BTN_addHoboiCat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_addHoboiCat" />
 

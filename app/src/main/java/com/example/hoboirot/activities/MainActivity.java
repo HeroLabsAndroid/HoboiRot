@@ -84,6 +84,13 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         }
     }
 
+    private void mkHobbs() {
+        hobbs = new ArrayList<>();
+        for(HoboiLog hl: logs) {
+            hobbs.add(hl.getHob());
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +98,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         setContentView(R.layout.activity_main);
 
         logs = DatProc.loadData(this);
-        for(HoboiLog hl: logs) {
-            hobbs.add(hl.getHob());
-        }
+        mkHobbs();
 
         logs = Util.sort_hobois_by_name(logs);
         for(HoboiLog hl: logs) {
@@ -223,9 +228,20 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
     }
 
     @Override
-    public void onHoboiRemove(int idx, String catID) {
-        tvDebug.setText(""+hobbcat.getAdapter().getItemCount()+" Items");
+    public void onHoboiRemove(String name, String catID) {
 
+
+        for (int i=0; i<logs.size(); i++) {
+            if(logs.get(i).getHob().getName().contentEquals(name) &&
+                    logs.get(i).getHob().getCatID().contentEquals(catID)) {
+                logs.remove(i);
+                break;
+            }
+        }
+        mkHobbs();
+        mkHobCats();
+        hobbcat.getAdapter().notifyDataSetChanged();
+        tvDebug.setText(""+hobbcat.getAdapter().getItemCount()+" Items");
         save_dat();
     }
 

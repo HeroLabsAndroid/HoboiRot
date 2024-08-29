@@ -1,6 +1,7 @@
 package com.example.hoboirot.datadapt;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,13 +23,14 @@ import com.example.hoboirot.dialog.AddHoboiDialog;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder> implements HoboiAdapter.HoboiRemoveListener, AddHoboiDialog.AddHoboiDialogListener {
+public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder> implements AddHoboiDialog.AddHoboiDialogListener {
 
     ViewHolder hold;
     ArrayList<HobCat> data;
     Context c;
 
     FragmentManager fragMan;
+
 
     public interface CatRemoveListener {
         void onCatRemoved(String catID);
@@ -50,6 +54,10 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
+    private void removeItem(int i) {
+        crListen.onCatRemoved(data.get(i).name);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull HobCatAdapter.ViewHolder holder, int position) {
 
@@ -60,7 +68,24 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
         holder.yeetCatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crListen.onCatRemoved(data.get(holder.getAdapterPosition()).name);
+                AlertDialog.Builder builder = new AlertDialog.Builder(c);
+                boolean rpl = false;
+                builder.setPositiveButton("I do!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        removeItem(holder.getAdapterPosition());
+                    }
+                });
+                builder.setNegativeButton("Nah fuck that", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancels the dialog.
+                    }
+                });
+
+                builder.setTitle("Delete that shit?");
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
 
@@ -70,6 +95,15 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
                 AddHoboiDialog hobDial = new AddHoboiDialog(data.get(holder.getAdapterPosition()).name);
 
                 hobDial.show(fragMan, "addhob");
+            }
+        });
+
+        holder.cstrlt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.hobRecView.getVisibility()==View.VISIBLE)
+                    holder.hobRecView.setVisibility(View.GONE);
+                else holder.hobRecView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -85,10 +119,6 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
         return data.size();
     }
 
-    @Override
-    public void onHoboiRemove(int idx, String catID) {
-        hrListen.onHoboiRemove(idx, catID);
-    }
 
     @Override
     public void onAddHoboiBtnClick(DialogFragment dialog, String name, String catID) {
@@ -108,6 +138,7 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
         RecyclerView hobRecView;
         TextView catTitTV, debugTV;
         Button addHobBtn, yeetCatBtn;
+        ConstraintLayout cstrlt;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -118,6 +149,7 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
             debugTV = itemView.findViewById(R.id.TV_hobcat_debug);
             addHobBtn = itemView.findViewById(R.id.BTN_hobcats_addhob);
             yeetCatBtn = itemView.findViewById(R.id.BTN_hobcats_yeetcat);
+            cstrlt = itemView.findViewById(R.id.CSTRLYT_hobcat);
         }
     }
 }
