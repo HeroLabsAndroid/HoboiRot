@@ -43,7 +43,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
 
 
     public interface HoboiRemoveListener {
-        public void onHoboiRemove();
+        public void onHoboiRemove(int idx, String catID);
     }
 
     public interface SnackbarListener {
@@ -54,6 +54,8 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
     SnackbarListener snacclisten;
     FragmentManager fragMan;
     Context ctx;
+
+    String catID;
 
     int longclickidx = -1;
 
@@ -111,10 +113,11 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
      *
      * @param dataSet ArrayList of Hobois
      */
-    public HoboiAdapter(ArrayList<HoboiLog> dataSet, Context c, FragmentManager fm) {
+    public HoboiAdapter(ArrayList<HoboiLog> dataSet, String catID, Context c, FragmentManager fm) {
         localDataSet = dataSet;
         hobremlisten = (HoboiRemoveListener) c;
         snacclisten = (SnackbarListener) c;
+        this.catID = catID;
 
         fragMan = fm;
         ctx = c;
@@ -235,7 +238,7 @@ public class HoboiAdapter extends RecyclerView.Adapter<HoboiAdapter.ViewHolder> 
     public void removeItem(ViewHolder viewHolder) {
         localDataSet.remove(viewHolder.getAdapterPosition());
         notifyItemRemoved(viewHolder.getAdapterPosition());
-        hobremlisten.onHoboiRemove();
+        hobremlisten.onHoboiRemove(viewHolder.getAdapterPosition(), catID);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

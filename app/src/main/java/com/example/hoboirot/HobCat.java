@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 public class HobCat {
 
-    int uid;
-    String name;
+    public ArrayList<HoboiLog> hob;
+    public String name;
+
+    public HobCat(ArrayList<HoboiLog> hob, String name) {
+        this.hob = hob;
+        this.name = name;
+    }
 }

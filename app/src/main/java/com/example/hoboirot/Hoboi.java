@@ -3,20 +3,33 @@ package com.example.hoboirot;
 import java.io.Serializable;
 
 public class Hoboi {
+
+    private String catID = "";
     private int id;
     private String name;
     private boolean doneToday;
 
-    public Hoboi(int id, String name) {
+    public Hoboi(int id, String name, String catID) {
         this.id = id;
         this.name = name;
         this.doneToday = false;
+        this.catID = catID;
     }
+
 
     public Hoboi(HoboiSave hs) {
         id = hs.id;
         name = hs.name;
+        catID = hs.catID;
         doneToday = false;
+    }
+
+    public String getCatID() {
+        return catID;
+    }
+
+    public void setCatID(String catID) {
+        this.catID = catID;
     }
 
     public int getId() {
@@ -44,6 +57,6 @@ public class Hoboi {
     }
 
     public HoboiSave toSave() {
-        return new HoboiSave(id, name);
+        return new HoboiSave(id, name, catID);
     }
 }

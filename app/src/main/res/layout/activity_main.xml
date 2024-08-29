@@ -8,12 +8,12 @@
     tools:context=".activities.MainActivity">
 
     <Button
-        android:id="@+id/BTN_addHoboi"
+        android:id="@+id/BTN_addHoboiCat"
         android:layout_width="108dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginBottom="32dp"
-        app:icon="@drawable/btn_new"
+        app:icon="@drawable/btn_newcat"
         app:iconGravity="top"
         app:iconPadding="16dp"
         app:iconSize="48dp"
@@ -29,7 +29,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@color/DARK_bg"
-        app:layout_constraintBottom_toTopOf="@+id/BTN_addHoboi"
+        app:layout_constraintBottom_toTopOf="@+id/BTN_addHoboiCat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,8 +59,8 @@
         app:iconGravity="top"
         app:iconPadding="0dp"
         app:iconSize="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_addHoboi"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_addHoboiCat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BTN_addHoboi" />
+        app:layout_constraintTop_toTopOf="@+id/BTN_addHoboiCat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
