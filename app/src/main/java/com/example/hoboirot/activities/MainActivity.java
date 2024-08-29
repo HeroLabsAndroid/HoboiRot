@@ -71,16 +71,32 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
     }
 
     private void mkHobCats() {
+        ArrayList<String> open_cats = new ArrayList<>();
+        if(hobbcat.getAdapter()!=null)
+            open_cats =  ((HobCatAdapter)hobbcat.getAdapter()).get_open_cats();
         hobcats = new ArrayList<>();
         for(HoboiLog hl: logs) {
             int hidx = hobCatID(hl.getHob().getCatID());
             if(hidx < 0) {
+
                 ArrayList<HoboiLog> cathobs = new ArrayList<>();
                 cathobs.add(hl);
-                hobcats.add(new HobCat(cathobs, hl.getHob().getCatID()));
+                HobCat hc = new HobCat(cathobs, hl.getHob().getCatID());
+
+                for (String s: open_cats) {
+                    if(s.contentEquals(hl.getHob().getCatID())) {
+                        hc.open = true;
+                        break;
+                    }
+
+                }
+
+                hobcats.add(hc);
             } else {
                 hobcats.get(hidx).hob.add(hl);
             }
+
+
         }
     }
 
@@ -121,10 +137,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
             }
         }
 
-        mkHobCats();
-        for(HobCat hc: hobcats) {
-            Log.d("HOBCATS", String.format(Locale.getDefault(),"Cat. %s contains %d hobois.", hc.name, hc.hob.size()));
-        }
+
 
         /*hobbs.add(new Hoboi(0, "Dummy1"));
         hobbs.add(new Hoboi(1, "Dummy2"));
@@ -143,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         btnAddCat = findViewById(R.id.BTN_addHoboiCat);
         btnStat = findViewById(R.id.BTN_stats);
         tvDebug = findViewById(R.id.TXTVW_debug);
+
+        mkHobCats();
 
         hobbcat.setLayoutManager(new LinearLayoutManager(this));
         HobCatAdapter hobCatAdapt = new HobCatAdapter(this, hobcats, getSupportFragmentManager());
@@ -165,6 +180,11 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
                 hobDial.show(fragMan, "addcat");
             }
         });
+
+
+        for(HobCat hc: hobcats) {
+            Log.d("HOBCATS", String.format(Locale.getDefault(),"Cat. %s contains %d hobois.", hc.name, hc.hob.size()));
+        }
 
         tvDebug.setText(String.format(Locale.getDefault(), "%d Cats", hobbcat.getAdapter().getItemCount()));
     }

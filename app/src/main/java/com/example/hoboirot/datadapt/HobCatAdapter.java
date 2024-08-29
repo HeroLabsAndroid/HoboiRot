@@ -39,6 +39,14 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
     HoboiAdapter.HoboiRemoveListener hrListen;
     CatRemoveListener crListen;
 
+    public ArrayList<String> get_open_cats() {
+        ArrayList<String> out = new ArrayList<>();
+        for (HobCat hc: data) {
+            if(hc.open) out.add(hc.name);
+        }
+        return out;
+    }
+
     public HobCatAdapter(Context context, ArrayList<HobCat> data, FragmentManager fragMan) {
         c = context;
         hrListen = (HoboiAdapter.HoboiRemoveListener) c;
@@ -101,15 +109,18 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
         holder.cstrlt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.hobRecView.getVisibility()==View.VISIBLE)
-                    holder.hobRecView.setVisibility(View.GONE);
-                else holder.hobRecView.setVisibility(View.VISIBLE);
+                data.get(position).open = !data.get(position).open;
+                holder.hobRecView.setVisibility(data.get(position).open ? View.VISIBLE : View.GONE);
             }
         });
+
+
+
 
         holder.hobRecView.setLayoutManager(new LinearLayoutManager(c));
         HoboiAdapter hobAdapt = new HoboiAdapter(data.get(position).hob, data.get(position).name, c, fragMan);
         holder.hobRecView.setAdapter(hobAdapt);
+        holder.hobRecView.setVisibility(data.get(position).open ? View.VISIBLE : View.GONE);
 
         hold = holder;
     }

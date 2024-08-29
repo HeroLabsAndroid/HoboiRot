@@ -6,6 +6,7 @@ public class HobCat {
 
     public ArrayList<HoboiLog> hob;
     public String name;
+    public boolean open = true;
 
     public HobCat(ArrayList<HoboiLog> hob, String name) {
         this.hob = hob;
