@@ -69,9 +69,11 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull HobCatAdapter.ViewHolder holder, int position) {
 
-        holder.catTitTV.setText(data.get(position).name);
+        holder.catTitTV.setText(data.get(holder.getAdapterPosition()).name);
 
-        holder.debugTV.setText(String.format(Locale.getDefault(), "%d hobbs", data.get(position).hob.size()));
+        String debugStr = data.get(holder.getAdapterPosition()).get_hobcat_string();
+
+        holder.debugTV.setText(debugStr);
 
         holder.yeetCatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +111,8 @@ public class HobCatAdapter extends RecyclerView.Adapter<HobCatAdapter.ViewHolder
         holder.cstrlt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                data.get(position).open = !data.get(position).open;
-                holder.hobRecView.setVisibility(data.get(position).open ? View.VISIBLE : View.GONE);
+                data.get(holder.getAdapterPosition()).open = !data.get(holder.getAdapterPosition()).open;
+                holder.hobRecView.setVisibility(data.get(holder.getAdapterPosition()).open ? View.VISIBLE : View.GONE);
             }
         });
 

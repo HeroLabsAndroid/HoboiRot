@@ -1,14 +1,14 @@
 package com.example.hoboirot.statview;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public interface StatViewable {
     int get_nr_dsets();
-    double get_val(int pos);
+    boolean done_on_day(LocalDate date, int dset);
 
-    String get_label(int pos);
+    LocalDate get_earliest();
 
-    String get_alt_label(int pos);
-
-    char get_min_label(int pos);
-    double get_maxval();
+    String get_dset_name(int dset);
 
 }
