@@ -1,15 +1,23 @@
 package com.example.hoboirot.activities;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.hoboirot.DatProc;
@@ -22,8 +30,13 @@ import com.example.hoboirot.datadapt.HobCatAdapter;
 import com.example.hoboirot.datadapt.HoboiAdapter;
 import com.example.hoboirot.dialog.AddHoboiDialog;
 import com.example.hoboirot.dialog.HoboiStatDialog;
+import com.example.hoboirot.dialog.IODialog;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +48,57 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
     ArrayList<HobCat> hobcats = new ArrayList<>();
     ArrayList<HoboiLog> logs = new ArrayList<>();
     RecyclerView hobbcat;
-    Button btnAddCat, btnStat;
+    Button btnAddCat, btnStat, btnIO;
     TextView tvDebug;
+
+    Spinner spnIoOpts;
+
+    boolean spinner_is_set_up = false;
 
 
     public void save_dat() {
-        DatProc.saveData(this, logs);
+        DatProc.saveJSONData(this, logs);
 
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == 3 && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
+            Uri uri = null;
+            if (resultData != null) {
+                uri =resultData.getData();
+
+                if(DatProc.exportData(logs, uri, getContentResolver())) {
+                    Snackbar.make(this, spnIoOpts, "Exported "+logs.size()+" logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(this, spnIoOpts, "Error exporting "+logs.size()+" logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
+            }
+        }
+        else if(requestCode == 4 && resultCode == Activity.RESULT_OK) {
+            Uri uri = null;
+            if (resultData != null) {
+                uri =resultData.getData();
+
+                logs = DatProc.import_data(uri, getContentResolver());
+                assert logs != null;
+                if(!logs.isEmpty()) {
+                    Snackbar.make(this, spnIoOpts, "Imported "+logs.size()+" logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                    mkHobbs();
+                    mkHobCats();
+                    hobbcat.setAdapter(new HobCatAdapter(this, hobcats, getSupportFragmentManager()));
+                    save_dat();
+                } else {
+                    Snackbar.make(this, spnIoOpts, "Error importing "+logs.size()+" logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
 
@@ -76,25 +133,28 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
             open_cats =  ((HobCatAdapter)hobbcat.getAdapter()).get_open_cats();
         hobcats = new ArrayList<>();
         for(HoboiLog hl: logs) {
-            int hidx = hobCatID(hl.getHob().getCatID());
-            if(hidx < 0) {
+            if(!(hl.getHob()==null)) {
+                int hidx = hobCatID(hl.getHob().getCatID());
+                if(hidx < 0) {
 
-                ArrayList<HoboiLog> cathobs = new ArrayList<>();
-                cathobs.add(hl);
-                HobCat hc = new HobCat(cathobs, hl.getHob().getCatID());
+                    ArrayList<HoboiLog> cathobs = new ArrayList<>();
+                    cathobs.add(hl);
+                    HobCat hc = new HobCat(cathobs, hl.getHob().getCatID());
 
-                for (String s: open_cats) {
-                    if(s.contentEquals(hl.getHob().getCatID())) {
-                        hc.open = true;
-                        break;
+                    for (String s: open_cats) {
+                        if(s.contentEquals(hl.getHob().getCatID())) {
+                            hc.open = true;
+                            break;
+                        }
+
                     }
 
+                    hobcats.add(hc);
+                } else {
+                    hobcats.get(hidx).hob.add(hl);
                 }
-
-                hobcats.add(hc);
-            } else {
-                hobcats.get(hidx).hob.add(hl);
             }
+
 
 
         }
@@ -113,8 +173,15 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logs = DatProc.loadData(this);
+        try {
+            logs = DatProc.loadJSONData(this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         mkHobbs();
+        mkHobCats();
 
         logs = Util.sort_hobois_by_name(logs);
         for(HoboiLog hl: logs) {
@@ -156,12 +223,23 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         btnAddCat = findViewById(R.id.BTN_addHoboiCat);
         btnStat = findViewById(R.id.BTN_stats);
         tvDebug = findViewById(R.id.TXTVW_debug);
+        btnIO = findViewById(R.id.BTN_io);
 
-        mkHobCats();
+
 
         hobbcat.setLayoutManager(new LinearLayoutManager(this));
         HobCatAdapter hobCatAdapt = new HobCatAdapter(this, hobcats, getSupportFragmentManager());
         hobbcat.setAdapter(hobCatAdapt);
+
+
+        btnIO.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragMan = getSupportFragmentManager();
+                IODialog ioDial = new IODialog();
+                ioDial.show(fragMan, "iodial");
+            }
+        });
 
 
         btnStat.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         }
 
         tvDebug.setText(String.format(Locale.getDefault(), "%d Cats", hobbcat.getAdapter().getItemCount()));
+
     }
 
     @Override

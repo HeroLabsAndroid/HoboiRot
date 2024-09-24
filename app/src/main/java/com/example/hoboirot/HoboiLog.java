@@ -2,6 +2,10 @@ package com.example.hoboirot;
 
 import static java.time.temporal.ChronoUnit.WEEKS;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +27,30 @@ public class HoboiLog {
         this.hob = new Hoboi(hls.hobsv);
         this.log = hls.log;
     }
+
+    //------------------ I/O --------------------------------------//
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject jsave = new JSONObject();
+        jsave.put("hob", hob.toJSON());
+        JSONArray jarr = new JSONArray();
+        for(HobPerf hp: log) {
+            jarr.put(hp.toJSON());
+        }
+        jsave.put("log", jarr);
+        return jsave;
+    }
+
+    public HoboiLog(JSONObject jsave) throws JSONException {
+        hob = new Hoboi(jsave.getJSONObject("hob"));
+        log = new ArrayList<>();
+        JSONArray jarr = jsave.getJSONArray("log");
+        for(int i=0; i< jarr.length(); i++) {
+            log.add(new HobPerf(jarr.getJSONObject(i)));
+        }
+    }
+
+    //-------------------------------------------------------------//
 
     /**
      * @return reference to Hoboi handled by this HoboiLog

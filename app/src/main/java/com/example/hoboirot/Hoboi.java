@@ -1,5 +1,8 @@
 package com.example.hoboirot;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class Hoboi {
@@ -8,6 +11,27 @@ public class Hoboi {
     private int id;
     private String name;
     private boolean doneToday;
+
+
+    //------------------ I/O --------------------------------------//
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject jsave = new JSONObject();
+
+        jsave.put("catID", catID);
+        jsave.put("id", id);
+        jsave.put("name", name);
+
+        return jsave;
+    }
+
+    public Hoboi(JSONObject jsave) throws JSONException {
+        catID = jsave.optString("catID", "NONE");
+        id = jsave.getInt("id");
+        name = jsave.getString("name");
+    }
+
+    //-------------------------------------------------------------//
 
     public Hoboi(int id, String name, String catID) {
         this.id = id;

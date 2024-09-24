@@ -1,5 +1,8 @@
 package com.example.hoboirot;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -9,6 +12,24 @@ import java.time.LocalDate;
 public class HobPerf implements Serializable, Comparable<HobPerf> {
     public LocalDate ld;
     public boolean suppl;
+
+    //------------------ I/O --------------------------------------//
+
+    public JSONObject toJSON() throws JSONException {
+        JSONObject jsave = new JSONObject();
+
+        jsave.put("ldt", new LDTSave(ld.atStartOfDay()).toJSON());
+        jsave.put("suppl", suppl);
+
+        return jsave;
+    }
+
+    public HobPerf(JSONObject jsave) throws JSONException {
+        suppl = jsave.getBoolean("suppl");
+        ld = (new LDTSave(jsave.getJSONObject("ldt"))).toLDT().toLocalDate();
+    }
+
+    //-------------------------------------------------------------//
 
     public HobPerf(LocalDate ld, boolean suppl) {
         this.ld = ld;

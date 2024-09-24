@@ -63,4 +63,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_addHoboiCat" />
 
+    <Button
+        android:id="@+id/BTN_io"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/ACC_5"
+        android:text="I/O"
+        app:layout_constraintEnd_toEndOf="@+id/TXTVW_debug"
+        app:layout_constraintTop_toBottomOf="@+id/TXTVW_debug" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
