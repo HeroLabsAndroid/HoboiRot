@@ -145,31 +145,33 @@ public class DatProc {
     static public ArrayList<HoboiLog> loadJSONData(Context con) throws IOException, JSONException {
         ArrayList<HoboiLog> out = new ArrayList<>();
         String result = "";
-        InputStream inputStream = con.openFileInput("hoblog.dat");
-        if(inputStream != null)
-        {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String temp = "";
-            StringBuilder stringBuilder = new StringBuilder();
+        try {
+            InputStream inputStream = con.openFileInput("hoblog.dat");
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String temp = "";
+                StringBuilder stringBuilder = new StringBuilder();
 
-            while((temp = bufferedReader.readLine()) != null)
-            {
-                stringBuilder.append(temp);
-                stringBuilder.append("\n");
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp);
+                    stringBuilder.append("\n");
+                }
+
+                inputStream.close();
+                result = stringBuilder.toString();
+
+                try {
+                    out = dataFromJSON(result);
+                } catch (Exception e) {
+                    Log.e("LOADDAT_JSON", "Error reading save data");
+                }
+
+            } else {
+                Log.d("LOADDAT_JSON", "ERROR OPENING SAVEFILE");
             }
-
-            inputStream.close();
-            result = stringBuilder.toString();
-
-            try {
-               out = dataFromJSON(result);
-            } catch (Exception e) {
-                Log.e("LOADDAT_JSON", "Error reading save data");
-            }
-
-        } else {
-            Log.d("LOADDAT_JSON", "ERROR OPENING SAVEFILE");
+        } catch (Exception e) {
+            Log.e("LOADDAT_JSON", "no save file");
         }
 
         return out;

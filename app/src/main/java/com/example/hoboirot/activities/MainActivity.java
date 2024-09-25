@@ -181,7 +181,6 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
             throw new RuntimeException(e);
         }
         mkHobbs();
-        mkHobCats();
 
         logs = Util.sort_hobois_by_name(logs);
         for(HoboiLog hl: logs) {
@@ -225,9 +224,10 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         tvDebug = findViewById(R.id.TXTVW_debug);
         btnIO = findViewById(R.id.BTN_io);
 
-
-
+        
         hobbcat.setLayoutManager(new LinearLayoutManager(this));
+
+        mkHobCats();
         HobCatAdapter hobCatAdapt = new HobCatAdapter(this, hobcats, getSupportFragmentManager());
         hobbcat.setAdapter(hobCatAdapt);
 
