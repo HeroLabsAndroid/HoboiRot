@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         tvDebug = findViewById(R.id.TXTVW_debug);
         btnIO = findViewById(R.id.BTN_io);
 
-        
+
         hobbcat.setLayoutManager(new LinearLayoutManager(this));
 
         mkHobCats();

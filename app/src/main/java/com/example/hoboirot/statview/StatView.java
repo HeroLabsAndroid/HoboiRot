@@ -16,11 +16,20 @@ import com.example.hoboirot.R;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class StatView extends View {
 
+    private class CatName {
+        String catID;
+        int catIdx;
 
+        public CatName(String id, int idx) {
+            catID = id;
+            catIdx = idx;
+        }
+    }
 
     Paint p = new Paint();
     Paint txt = new Paint();
@@ -29,7 +38,7 @@ public class StatView extends View {
     protected StatViewable data;
     protected boolean has_data = false;
 
-
+    ArrayList<String> hobCats = new ArrayList<>();
 
     public StatView(Context context, AttributeSet attr) {
         super(context, attr);
@@ -40,16 +49,32 @@ public class StatView extends View {
         nr_dset = data.get_nr_dsets();
         has_data = true;
 
+        mkHobCats();
+
         invalidate();
     }
 
+    private void mkHobCats() {
+        for(int i=0; i<nr_dset; i++) {
+            String catID = data.get_cat(i);
+
+            boolean exists = false;
+            for(String s: hobCats) {
+                if(s.contentEquals(catID)) {
+                    exists = true;
+                    break;
+                }
+            }
+            if(!exists) hobCats.add(catID);
+        }
+    }
 
     @Override
     public void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if(has_data) {
             int h = getHeight()-128;
-            int w_offset = 128;
+            int w_offset = 256;
             int w = getWidth()-w_offset;
 
             p.setColor(ContextCompat.getColor(StatView.this.getContext(), R.color.STVW_bg));
@@ -74,11 +99,17 @@ public class StatView extends View {
             canvas.drawLine(w_offset, h, w+w_offset, h, p);
 
 
-
-
             for(int i=0; i<nr_dset; i++) {
+                for(int j=0; j<hobCats.size(); j++) {
+                    if(data.get_cat(i).contentEquals(hobCats.get(j))) {
+                        p.setColor(Const.STVW_CAT_CLRS[j%Const.STVW_CAT_CLRS.length].toArgb());
+                        break;
+                    }
+                }
+                canvas.drawRect(w_offset, (float)i*height_of_dset, w+w_offset, (float)(i+1)*height_of_dset, p);
+                p.setColor(ContextCompat.getColor(StatView.this.getContext(), R.color.STVW_line));
                 canvas.drawLine(w_offset, (float)i*height_of_dset, w+w_offset, (float)i*height_of_dset, p);
-                canvas.drawText(data.get_dset_name(i), 4, i*height_of_dset+height_of_dset/2, txt);
+                canvas.drawText(data.get_dset_name(i), 16, i*height_of_dset+height_of_dset, txt);
             }
 
 
@@ -87,21 +118,11 @@ public class StatView extends View {
                     Color barclr = Const.STVW_CLRS[j%Const.STVW_CLRS.length];
                     p.setColor(barclr.toArgb());
                     if(data.done_on_day(data.get_earliest().plusDays(i), j)) {
-                        canvas.drawRect(w_offset+i*width_of_day, j*height_of_dset, w_offset+(i+1)*width_of_day, (j+1)*height_of_dset, p);
+                        canvas.drawRect(w_offset+i*width_of_day, j*height_of_dset+1, w_offset+(i+1)*width_of_day, (j+1)*height_of_dset-1, p);
                     }
                 }
             }
 
-            /*double max = data.get_maxval();
-            for (int i = 0; i < nr_dset; i++) {
-                String label = data.get_label(i);
-                double val = data.get_val(i);
-
-                canvas.drawRect(w_offset+((i) * (w / (float) nr_dset)+4), (float) ((max-val) / max)*h, w_offset+((i + 1) * (w / (float) nr_dset)-4), h, p);
-                if(show_label) canvas.drawText(label, w_offset+((i) * (w / (float) nr_dset)+8), h+32, txt);
-                else if(show_min_label) canvas.drawText(String.valueOf(data.get_min_label(i)), w_offset+((i) * (w / (float) nr_dset)+8), h+32, txt);
-                if(show_alt_label) canvas.drawText(data.get_alt_label(i), w_offset+((i) * (w / (float) nr_dset)+8), h+64, txt);
-            }*/
         }
     }
 }

@@ -95,6 +95,11 @@ public class HoboiStatDialog extends DialogFragment implements StatViewable {
     }
 
     @Override
+    public String get_cat(int dset) {
+        return hoboi_list.get(dset).getHob().getCatID();
+    }
+
+    @Override
     public LocalDate get_earliest() {
         LocalDate earliest = LocalDate.MAX;
         for (int i=0; i<hoboi_list.size(); i++) {

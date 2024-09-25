@@ -19,4 +19,11 @@ public class Const {
             Color.valueOf(0xFFC7C4B2),
             Color.valueOf(0xFFB2C7B4)
     };
+
+    public static final Color[] STVW_CAT_CLRS = {
+            Color.valueOf(0xAB543E57),
+            Color.valueOf(0xAB3E4357),
+            Color.valueOf(0xAB42573E),
+            Color.valueOf(0xAB6A553F)
+    };
 }

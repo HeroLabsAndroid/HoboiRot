@@ -7,6 +7,8 @@ public interface StatViewable {
     int get_nr_dsets();
     boolean done_on_day(LocalDate date, int dset);
 
+    String get_cat(int dset);
+
     LocalDate get_earliest();
 
     String get_dset_name(int dset);
