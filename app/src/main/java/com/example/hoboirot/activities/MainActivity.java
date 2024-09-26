@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements AddHoboiDialog.AddHoboiDialogListener, HoboiAdapter.HoboiRemoveListener, HoboiAdapter.SnackbarListener, HobCatAdapter.CatRemoveListener {
+public class MainActivity extends AppCompatActivity implements AddHoboiDialog.AddHoboiDialogListener, HoboiAdapter.HoboiRemoveListener, HoboiAdapter.SnackbarListener, HobCatAdapter.CatRemoveListener, IODialog.IOListen {
 
     ArrayList<Hoboi> hobbs = new ArrayList<>();
     ArrayList<HobCat> hobcats = new ArrayList<>();
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
     Button btnAddCat, btnStat, btnIO;
     TextView tvDebug;
 
-    Spinner spnIoOpts;
 
     boolean spinner_is_set_up = false;
 
@@ -63,43 +62,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
 
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode,
-                                 Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
-        if (requestCode == 3 && resultCode == Activity.RESULT_OK) {
-            // The result data contains a URI for the document or directory that
-            // the user selected.
-            Uri uri = null;
-            if (resultData != null) {
-                uri =resultData.getData();
 
-                if(DatProc.exportData(logs, uri, getContentResolver())) {
-                    Snackbar.make(this, spnIoOpts, "Exported "+logs.size()+" logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
-                } else {
-                    Snackbar.make(this, spnIoOpts, "Error exporting "+logs.size()+" logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
-                }
-            }
-        }
-        else if(requestCode == 4 && resultCode == Activity.RESULT_OK) {
-            Uri uri = null;
-            if (resultData != null) {
-                uri =resultData.getData();
-
-                logs = DatProc.import_data(uri, getContentResolver());
-                assert logs != null;
-                if(!logs.isEmpty()) {
-                    Snackbar.make(this, spnIoOpts, "Imported "+logs.size()+" logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
-                    mkHobbs();
-                    mkHobCats();
-                    hobbcat.setAdapter(new HobCatAdapter(this, hobcats, getSupportFragmentManager()));
-                    save_dat();
-                } else {
-                    Snackbar.make(this, spnIoOpts, "Error importing "+logs.size()+" logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
 
 
     public void show_stats() {
@@ -165,6 +128,12 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         for(HoboiLog hl: logs) {
             hobbs.add(hl.getHob());
         }
+    }
+
+    public void openIODialog() {
+        FragmentManager fragMan = getSupportFragmentManager();
+        IODialog ioDial = new IODialog(this);
+        ioDial.show(fragMan, "iodial");
     }
 
 
@@ -235,9 +204,7 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
         btnIO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragMan = getSupportFragmentManager();
-                IODialog ioDial = new IODialog();
-                ioDial.show(fragMan, "iodial");
+                openIODialog();
             }
         });
 
@@ -377,5 +344,41 @@ public class MainActivity extends AppCompatActivity implements AddHoboiDialog.Ad
 
         mkHobCats();
         hobbcat.setAdapter(new HobCatAdapter(this, hobcats, getSupportFragmentManager()));
+    }
+
+    @Override
+    public void onDataExport(Intent resultData) {
+        // The result data contains a URI for the document or directory that
+        // the user selected.
+        Uri uri = null;
+        if (resultData != null) {
+            uri =resultData.getData();
+
+            if(DatProc.exportData(logs, uri, getContentResolver())) {
+                Snackbar.make(this, btnIO, "Exported "+logs.size()+" logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(this, btnIO, "Error exporting "+logs.size()+" logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onDataImport(Intent resultData) {
+        Uri uri = null;
+        if (resultData != null) {
+            uri =resultData.getData();
+
+            logs = DatProc.import_data(uri, getContentResolver());
+            assert logs != null;
+            if(!logs.isEmpty()) {
+                Snackbar.make(this, btnIO, "Imported "+logs.size()+" logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                mkHobbs();
+                mkHobCats();
+                hobbcat.setAdapter(new HobCatAdapter(this, hobcats, getSupportFragmentManager()));
+                save_dat();
+            } else {
+                Snackbar.make(this, btnIO, "Error importing "+logs.size()+" logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+            }
+        }
     }
 }

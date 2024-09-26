@@ -59,7 +59,8 @@ public class DatProc {
             assert pfd != null;
             FileOutputStream fos = new FileOutputStream(pfd.getFileDescriptor());
 
-            fos.write(dataToJSON(logs).getBytes());
+            byte[] bytesave = dataToJSON(logs).getBytes();
+            fos.write(bytesave);
             fos.flush();
             fos.close();
             pfd.close();
