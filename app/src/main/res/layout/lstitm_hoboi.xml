@@ -60,7 +60,7 @@
         android:scrollHorizontally="false"
         android:text="TextView"
         android:textColor="@color/DARK_txt"
-        android:textSize="32sp"
+        android:textSize="28dp"
         app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

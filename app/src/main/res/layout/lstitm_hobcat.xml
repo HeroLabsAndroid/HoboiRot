@@ -15,7 +15,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/cute_font"
         android:text="Mach Neu"
-        android:textSize="24sp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/BTN_hobcats_yeetcat"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +28,7 @@
         android:fontFamily="@font/philosopher"
         android:text="CatTit"
         android:textColor="@color/DARK_txt"
-        android:textSize="38sp"
+        android:textSize="32dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/BTN_hobcats_addhob"
         app:layout_constraintHorizontal_bias="0.0"
@@ -66,7 +66,7 @@
         android:fontFamily="@font/cute_font"
         android:text="yeet"
         android:textAllCaps="false"
-        android:textSize="28sp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="@+id/BTN_hobcats_addhob"
